@@ -1,0 +1,52 @@
+# Example test configurations demonstrating the extension system
+# This file shows how to use the <multiple> extension for flexible validation
+
+---
+name: "Health Check - Multiple Status Codes"
+relative-url: /health
+type: GET
+expected:
+  status<multiple>: 200 | 503
+  content-type<multiple>: application/json | text/plain
+  response:
+    type: contains
+    value: "status"
+
+---
+name: "API Endpoint - Flexible Response"
+relative-url: /api/data
+type: GET
+expected:
+  status<multiple>: 200 | 404 | 500
+  content-type<multiple>: application/json | application/xml
+  response:
+    type: contains
+    value: "data"
+
+---
+name: "User Authentication - Multiple Content Types"
+relative-url: /api/auth/login
+type: POST
+body:
+  username: "testuser"
+  password: "testpass"
+expected:
+  status<multiple>: 200 | 401 | 400
+  content-type<multiple>: application/json | text/html
+  response:
+    type: regex
+    value: '"token":"[a-zA-Z0-9]+"'
+
+---
+name: "File Upload - Multiple Status Codes"
+relative-url: /api/upload
+type: POST
+body:
+  file: "@test-file.txt"
+  description: "Test upload"
+expected:
+  status<multiple>: 201 | 400 | 413
+  content-type<multiple>: application/json | text/plain
+  response:
+    type: contains
+    value: "uploaded"

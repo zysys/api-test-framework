@@ -1,0 +1,201 @@
+# Example test configurations for Zysys API Test Framework
+# This file demonstrates various test scenarios and validation types
+
+---
+name: "Health Check - Basic GET"
+relative-url: /health
+type: GET
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: contains
+    value: "status"
+
+---
+name: "User Authentication - POST with JSON"
+relative-url: /api/auth/login
+type: POST
+body:
+  username: "testuser"
+  password: "testpass"
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: regex
+    value: '"token":"[a-zA-Z0-9]+"'
+
+---
+name: "Data Validation - Exact Match"
+relative-url: /api/config/version
+type: GET
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: exact
+    value: '{"version":"1.0.0"}'
+
+---
+name: "Error Handling - 404 Not Found"
+relative-url: /api/nonexistent
+type: GET
+expected:
+  status: 404
+  content-type: text/html
+  response:
+    type: contains
+    value: "Not Found"
+
+---
+name: "CORS Validation"
+relative-url: /api/public/data
+type: GET
+expected:
+  status: 200
+  cors: "*"
+  response:
+    type: contains
+    value: "data"
+
+---
+name: "Empty Response Test"
+relative-url: /api/empty
+type: DELETE
+expected:
+  status: 204
+  response:
+    type: empty
+
+---
+name: "File Upload - Multipart"
+relative-url: /api/upload
+type: POST
+body:
+  file: "@test-file.txt"
+  description: "Test upload"
+expected:
+  status: 201
+  content-type: application/json
+  response:
+    type: contains
+    value: "uploaded"
+
+---
+name: "Rate Limiting - Too Many Requests"
+relative-url: /api/limited
+type: GET
+expected:
+  status: 429
+  response:
+    type: contains
+    value: "rate limit"
+
+---
+name: "Authentication Required"
+relative-url: /api/protected
+type: GET
+expected:
+  status: 401
+  response:
+    type: contains
+    value: "unauthorized"
+
+---
+name: "User Registration - POST with Validation"
+relative-url: /api/users/register
+type: POST
+body:
+  email: "test@example.com"
+  password: "securepassword123"
+  name: "Test User"
+expected:
+  status: 201
+  content-type: application/json
+  response:
+    type: regex
+    value: '"id":"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"'
+
+---
+name: "Get User Profile - Authenticated Request"
+relative-url: /api/users/profile
+type: GET
+headers:
+  Authorization: "Bearer your-jwt-token-here"
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: contains
+    value: "email"
+
+---
+name: "Update User - PUT Request"
+relative-url: /api/users/123
+type: PUT
+body:
+  name: "Updated Name"
+  email: "updated@example.com"
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: contains
+    value: "Updated Name"
+
+---
+name: "Delete User - DELETE Request"
+relative-url: /api/users/123
+type: DELETE
+expected:
+  status: 204
+  response:
+    type: empty
+
+---
+name: "Validation Error - Invalid Email"
+relative-url: /api/users/register
+type: POST
+body:
+  email: "invalid-email"
+  password: "password"
+expected:
+  status: 400
+  content-type: application/json
+  response:
+    type: contains
+    value: "validation"
+
+---
+name: "Server Error - 500 Internal Server Error"
+relative-url: /api/error
+type: GET
+expected:
+  status: 200
+  content-type: application/json
+  response:
+    type: contains
+    value: "error"
+
+---
+name: "API Documentation - Swagger/OpenAPI"
+relative-url: /api/docs
+type: GET
+expected:
+  status: 200
+  content-type: text/html
+  response:
+    type: contains
+    value: "swagger"
+
+---
+name: "API Versioning - Version Header"
+relative-url: /api/v1/users
+type: GET
+headers:
+  Accept: "application/vnd.api+json"
+  X-API-Version: "1.0"
+expected:
+  status: 200
+  content-type: application/json

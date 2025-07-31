@@ -1,0 +1,30 @@
+# Example configuration file for Zysys API Test Framework
+# Copy this to config.yaml and customize for your project
+
+# Base URL for all relative endpoints
+baseUrl: "http://localhost:8080"
+
+# Number of retry attempts for failed requests
+retries: 3
+
+# Whether to trim whitespace from responses
+trim: true
+
+# Stop execution on first failure
+stop-on-fail: false
+
+# Request timeout in seconds
+timeout: 30
+
+# Maximum concurrent requests (0 = auto-detect CPU cores)
+concurrent: 0
+
+# Logging level (DEBUG, INFO, WARNING, ERROR)
+log-level: "INFO"
+
+# Output format (text, json, junit)
+output-format: "text"
+
+# Save test results to file
+save-results: true
+results-file: "test-results.json" 
