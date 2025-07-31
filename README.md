@@ -44,9 +44,6 @@ pip install git+<repository-url>
 # Download the latest standalone runner from releases
 curl -L https://github.com/zysys/api-test-framework/releases/latest/download/runner.py -o runner.py
 
-# Or download from GitHub Actions artifacts (latest build)
-# Visit: https://github.com/zysys/api-test-framework/actions
-# Download the "runner-latest" artifact from the latest workflow run
 ```
 
 ### Option 2: Clone and Install
@@ -424,12 +421,11 @@ The framework includes GitHub Actions that automatically generate the latest sta
 ### Automatic Runner Generation
 
 - **On every push to main**: The latest `runner.py` is automatically generated
-- **Available as**: GitHub release asset and workflow artifact
+- **Available as**: GitHub release asset 
 - **Always up-to-date**: Contains the latest features and bug fixes
 
 ### GitHub Actions
 
-- `.github/workflows/generate-runner.yml` - Generates `runner.py` as workflow artifact
 - `.github/workflows/release-runner.yml` - Creates GitHub releases with `runner.py` as asset
 
 ## 🆘 Support
