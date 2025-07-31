@@ -38,11 +38,23 @@ pip install git+<repository-url>
 
 ## 🎯 Quick Start
 
-1. **Download the runner:**
+### Option 1: Download Latest Standalone Runner
 
-   ```bash
-   curl -O https://raw.githubusercontent.com/zysys/api-test-framework/main/runner.py
-   ```
+```bash
+# Download the latest standalone runner
+curl -L https://github.com/zysys/api-test-framework/releases/latest/download/runner.py -o runner.py
+
+# Or download directly from main branch
+curl -O https://raw.githubusercontent.com/zysys/api-test-framework/main/runner.py
+```
+
+### Option 2: Clone and Install
+
+```bash
+git clone <repository-url>
+cd zysys-api-test-framework
+pip install -r requirements.txt
+```
 
 2. **Initialize the framework:**
 
@@ -404,8 +416,23 @@ This is the first official release of the Zysys API Test Framework. The extensio
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
+## 🔄 Continuous Integration
+
+The framework includes GitHub Actions that automatically generate the latest standalone runner:
+
+### Automatic Runner Generation
+
+- **On every push to main**: The latest `runner.py` is automatically generated
+- **Available as**: GitHub release asset and in the main branch
+- **Always up-to-date**: Contains the latest features and bug fixes
+
+### GitHub Actions
+
+- `.github/workflows/generate-runner.yml` - Generates and commits `runner.py` to main
+- `.github/workflows/release-runner.yml` - Creates GitHub releases with `runner.py` as asset
+
 ## 🆘 Support
 
 - Check the examples in the `examples/` directory
-- Run `python3 zysys_test_simple.py info` for configuration help
-- Use `--log-level DEBUG` for detailed debugging information (with original CLI)
+- Run `python3 runner.py --help` for configuration help
+- Use `--log-level DEBUG` for detailed debugging information

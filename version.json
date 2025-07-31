@@ -1,10 +1,10 @@
 {
   "major": 1,
   "minor": 0,
-  "patch": 0,
+  "patch": 1,
   "build": 1,
   "created": "2025-07-30T17:52:01.300181",
-  "last_updated": "2025-07-30T19:34:21.391151",
+  "last_updated": "2025-07-31T10:24:35.138639",
   "history": [
     {
       "version": "1.0.0",
@@ -144,6 +144,11 @@
     {
       "version": "2.0.13",
       "date": "2025-07-30T19:34:21.391411",
+      "description": "Auto-incremented patch version"
+    },
+    {
+      "version": "1.0.1",
+      "date": "2025-07-31T10:24:35.139073",
       "description": "Auto-incremented patch version"
     }
   ]

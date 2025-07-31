@@ -1,0 +1,80 @@
+name: Release Standalone Runner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate runner.py
+        run: |
+          python release.py
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: latest
+          release_name: Latest Standalone Runner
+          body: |
+            ## Latest Standalone Runner
+
+            This is the latest standalone version of the Zysys API Test Framework.
+
+            ### Usage
+            ```bash
+            # Download and run directly
+            curl -L https://github.com/${{ github.repository }}/releases/latest/download/runner.py -o runner.py
+            python3 runner.py --help
+
+            # Or use with your test config
+            python3 runner.py --config your-tests.yaml
+            ```
+
+            ### Features
+            - Complete API testing framework in a single file
+            - Extension system support
+            - Async/await with retry logic
+            - Built-in validation and reporting
+
+            ### Version
+            Generated from commit: ${{ github.sha }}
+            Date: ${{ github.event.head_commit.timestamp }}
+          draft: false
+          prerelease: false
+
+      - name: Upload runner.py as Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./runner.py
+          asset_name: runner.py
+          asset_content_type: text/plain
+
+      - name: Create Latest Tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -f latest
+          git push origin latest --force
