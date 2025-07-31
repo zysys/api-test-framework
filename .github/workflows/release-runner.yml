@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -29,12 +33,10 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
-          release_name: Latest Standalone Runner
+          name: Latest Standalone Runner
           body: |
             ## Latest Standalone Runner
 
@@ -59,18 +61,9 @@ jobs:
             ### Version
             Generated from commit: ${{ github.sha }}
             Date: ${{ github.event.head_commit.timestamp }}
+          files: runner.py
           draft: false
           prerelease: false
-
-      - name: Upload runner.py as Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./runner.py
-          asset_name: runner.py
-          asset_content_type: text/plain
 
       - name: Create Latest Tag
         run: |

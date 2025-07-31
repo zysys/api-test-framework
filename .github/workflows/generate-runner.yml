@@ -28,7 +28,7 @@ jobs:
           python release.py
 
       - name: Upload runner.py as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: runner-latest
           path: runner.py
